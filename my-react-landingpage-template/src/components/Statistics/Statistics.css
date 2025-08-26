@@ -1,0 +1,39 @@
+/* Statistics section */
+
+.statistics {
+    padding: 5rem 2rem; 
+    background-color: #fff;
+    text-align: center; 
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px; 
+    margin: 0 auto; 
+    gap: 2rem; 
+}
+
+.stat {
+    flex: 1; 
+    min-width: 200px;
+}
+
+.stat-number {
+    font-size: 3rem;
+    color: #4a90e2; 
+    margin-bottom: 0.5rem;
+}
+
+.stat p {
+    font-size: 1.1rem;
+    color: #666; 
+}
+
+@media (max-width: 768px) {
+    .stats-container {
+        flex-direction: column;
+        gap: 3rem; 
+    }
+}

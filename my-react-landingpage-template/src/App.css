@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* Signup Section */
+.signup {
+  padding: 5rem 2rem; 
+  text-align: center;
+  background-color: #f0f8ff;
+}
+
+.signup h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.signup p {
+  margin-bottom: 2rem;
+}
+
+.signup-form {
+  display: flex;
+  justify-content: center;
+  max-width: 500px; 
+  margin: 0 auto;
+}
+
+.signup-form input {
+  padding: 0.8rem; 
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+  width: 70%; 
+}
+
+.signup-form button {
+  padding: 0.8rem 1.5rem; 
+  background-color: #4a90e2;
+  color: white; 
+  border: none; 
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .nav-container {
+    flex-direction: column;
+  }
+
+  .nav-menu {
+    margin-top: 1rem;
+  }
+
+  .nav-item {
+    margin: 0 0.5rem;
+  }
+
+  .features-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+}

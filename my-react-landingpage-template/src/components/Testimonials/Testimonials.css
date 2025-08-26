@@ -1,0 +1,24 @@
+.testimonials {
+  padding: 5rem 3rem;
+  text-align: center;
+}
+
+.testimonial {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial p {
+  font-style: italic;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial span {
+  font-weight: bold;
+  color: #4a90e2;
+}
