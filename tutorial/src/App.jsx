@@ -2,6 +2,7 @@ import Search from "./components/Search";
 import React, { useState, useEffect } from "react";
 import Spinner from "./components/Spinner";
 import MovieCard from "./components/MovieCard";
+import {useDebounce} from 'react-use';
 
 const API_URL = "https://api.themoviedb.org/3";
 
@@ -20,13 +21,15 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
   const [movieList, setMovieList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
   const fetchMovies = async (query = "") => {
     setIsLoading(true);
     setErrorMessage("");
     try {
       // Some code here
-      const endpoint = `${API_URL}/discover/movie?sort_by=popularity.desc&include_adult=false&include_video=false&page=1`;
+      const endpoint = query ? `${API_URL}/search/movie?query=${encodeURIComponent(query)}`:`${API_URL}/discover/movie?sort_by=popularity.desc&include_adult=false&include_video=false&page=1`;
       const response = await fetch(endpoint, API_OPTIONS);
 
       // alert(response.status);
@@ -55,8 +58,8 @@ function App() {
     }
   };
   useEffect(() => {
-    fetchMovies(searchTerm);
-  }, []);
+    fetchMovies(debouncedSearchTerm);
+  }, [debouncedSearchTerm]);
   return (
     <main>
       <div className="pattern" />
