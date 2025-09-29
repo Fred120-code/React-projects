@@ -1,35 +1,94 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Search from "./components/Search";
+import React, { useState, useEffect } from "react";
+import Spinner from "./components/Spinner";
+import MovieCard from "./components/MovieCard";
+
+const API_URL = "https://api.themoviedb.org/3";
+
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+
+const API_OPTIONS = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization: `Bearer ${API_KEY}`,
+  },
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [movieList, setMovieList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const fetchMovies = async (query = "") => {
+    setIsLoading(true);
+    setErrorMessage("");
+    try {
+      // Some code here
+      const endpoint = `${API_URL}/discover/movie?sort_by=popularity.desc&include_adult=false&include_video=false&page=1`;
+      const response = await fetch(endpoint, API_OPTIONS);
+
+      // alert(response.status);
+
+      // throw new Error("Failed to fetch movies");
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch movies!`);
+      }
+
+      const data = await response.json();
+
+      if (data.Response === "False") {
+        setErrorMessage(
+          data.Error || "An error occurred while fetching movies."
+        );
+        setMovieList([]);
+      }
+
+      setMovieList(data.results || []);
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      setErrorMessage("Failed to fetch movies. Please try again later.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchMovies(searchTerm);
+  }, []);
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main>
+      <div className="pattern" />
+
+      <div className="wrapper">
+        <header>
+          <img src="./hero.png" alt="Hero Banner" />
+          <h1>
+            Find <span className="text-gradient">Movies</span> You'll Enjoy
+            Without the Hassle
+          </h1>
+          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        </header>
+
+        <section className="all-movies">
+          <h2 className="mt-[40px]">All Movies</h2>
+
+          {isLoading ? (
+            <Spinner />
+          ) : errorMessage ? (
+            <p className="text-red-500">{errorMessage}</p>
+          ) : (
+            <ul>
+              {movieList.map((movie) => (
+                <MovieCard key={movie.id} movie={movie} />
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </main>
+  );
 }
 
-export default App
+export default App;
