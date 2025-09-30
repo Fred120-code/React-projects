@@ -55,8 +55,15 @@ function App() {
 
   //Load the todos from the local storage
   useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem("todos") || "[]");
-    setTodos(savedTodos);
+    // Fixed: Added try/catch to handle corrupted or invalid JSON in localStorage
+    try {
+      const saved = localStorage.getItem("todos");
+      const savedTodos = saved ? JSON.parse(saved) : [];
+      setTodos(Array.isArray(savedTodos) ? savedTodos : []);
+    } catch (err) {
+      setTodos([]); // fallback to empty list if error
+      // Optionally, you could log the error: console.error("Failed to load todos from localStorage", err);
+    }
   }, []);
 
   //Saving the todos to the local storage
@@ -415,4 +422,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;
